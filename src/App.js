@@ -4,17 +4,28 @@ import { DataStore } from '@aws-amplify/datastore';
 import { Post } from './models';
 import { Comment } from './models';
 import { useEffect, useState } from 'react';
+import { Amplify } from 'aws-amplify';
 
-function App() {
+import { withAuthenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+
+import awsExports from './aws-exports';
+Amplify.configure(awsExports);
+
+function App({signOut, user}) {
 
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
 
+  const getPosts = async () => {
+    const models = await DataStore.query(Post, c => c.username.contains(user.username));
+    setPosts(models);
+    console.log(models);
+  }
+
   useEffect(() => {
-    const getPosts = async () => {
-      const models = await DataStore.query(Post);
-      setPosts(models);
-    }
+    console.log(user.username);
+    
 
     const getComments = async () => {
       const models = await DataStore.query(Comment);
@@ -33,14 +44,15 @@ function App() {
     // it is then logged to make sure it is correct
     const post = {
       title: window.prompt('blog post title'),
-      content: window.prompt('blog post content')
+      content: window.prompt('blog post content'),
+      username: user.username
     }
 
     const newPost = await DataStore.save(
       new Post(post)
     )
     console.log(newPost);
-
+    getPosts()
   }
 
   const updateTitle = async (id) => {
@@ -91,6 +103,10 @@ function App() {
   // in this return, posts is mapped through and displays each post
   return (
     <div className="App">
+      <>
+      <h1>Hello {user.username}</h1>
+      <button onClick={signOut}>Sign out</button>
+    </>
       <button onClick={createPost}>Create post</button>
       <div className='blogWrapper'>
         {posts.map(post =>
@@ -116,4 +132,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App);
