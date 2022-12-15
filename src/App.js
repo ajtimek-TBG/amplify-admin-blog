@@ -18,7 +18,8 @@ function App({signOut, user}) {
   const [comments, setComments] = useState([])
 
   const getPosts = async () => {
-    const models = await DataStore.query(Post, c => c.username.contains(user.username));
+    // const models = await DataStore.query(Post, c => c.username.contains(user.username));
+    const models = await DataStore.query(Post)
     setPosts(models);
     console.log(models);
   }
@@ -111,6 +112,7 @@ function App({signOut, user}) {
       <div className='blogWrapper'>
         {posts.map(post =>
           <div className='blogBox' key={post.id} >
+            <h6>Author: {post.username}</h6>
             <h1>{post.title}</h1>
             <h5>{post.content}</h5>
             {comments.map(comment => {
@@ -122,9 +124,16 @@ function App({signOut, user}) {
                 )
               }
             })}
-            <button onClick={() => createComment(post.id)}>Add comment</button>
-            <button onClick={() => deletePost(post.id)}>Delete post</button>
-            <button onClick={() => updateTitle(post.id)}>Update title</button>
+            {user.username === post.username ? (
+              <>
+                <button onClick={() => createComment(post.id)}>Add comment</button>
+              <button onClick={() => deletePost(post.id)}>Delete post</button>
+              <button onClick={() => updateTitle(post.id)}>Update title</button>
+              </>
+            ) : (
+              <button onClick={() => createComment(post.id)}>Add comment</button>
+            )}
+            
           </div>
         )}
       </div>
