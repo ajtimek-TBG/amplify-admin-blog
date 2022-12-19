@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/items": {
+      "name": "/items",
+      "lambdaFunction": "amplifyadminblog349a2f6d",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

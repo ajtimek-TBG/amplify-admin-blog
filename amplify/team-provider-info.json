@@ -14,6 +14,26 @@
     "categories": {
       "auth": {
         "amplifyadminblog": {}
+      },
+      "function": {
+        "amplifyadminblogbb9f7205": {},
+        "amplifyadminblog349a2f6d": {
+          "deploymentBucketName": "amplify-amplifyadminblog-staging-184620-deployment",
+          "s3Key": "amplify-builds/amplifyadminblog349a2f6d-57396f56535351574451-build.zip"
+        },
+        "testFunction": {
+          "deploymentBucketName": "amplify-amplifyadminblog-staging-184620-deployment",
+          "s3Key": "amplify-builds/testFunction-6b425068363754367a71-build.zip"
+        },
+        "newTestFunction": {
+          "deploymentBucketName": "amplify-amplifyadminblog-staging-184620-deployment",
+          "s3Key": "amplify-builds/newTestFunction-623854412f5159725044-build.zip"
+        }
+      },
+      "api": {
+        "amplifyadminblog": {},
+        "api3feb80a3": {},
+        "testFunctionApi": {}
       }
     }
   }

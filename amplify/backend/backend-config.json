@@ -20,6 +20,34 @@
           ]
         }
       }
+    },
+    "api3feb80a3": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "amplifyadminblog349a2f6d",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "testFunctionApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "newTestFunction",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "auth": {
@@ -51,6 +79,44 @@
           "EMAIL"
         ]
       }
+    }
+  },
+  "function": {
+    "amplifyadminblog349a2f6d": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "testFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "api3feb80a3",
+          "attributes": [
+            "ApiName",
+            "ApiId"
+          ]
+        }
+      ]
+    },
+    "newTestFunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "amplifyadminblog",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ]
+        }
+      ]
     }
   }
 }

@@ -5,6 +5,7 @@ import { Post } from './models';
 import { Comment } from './models';
 import { useEffect, useState } from 'react';
 import { Amplify } from 'aws-amplify';
+import axios from 'axios';
 
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
@@ -16,6 +17,8 @@ function App({signOut, user}) {
 
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
+  // const api = 'https://p5268ukeqb.execute-api.us-west-1.amazonaws.com/default/amplifyadminblog349a2f6d-staging'
+  // const data = {"name": "AJ"}
 
   const getPosts = async () => {
     // const models = await DataStore.query(Post, c => c.username.contains(user.username));
@@ -38,6 +41,16 @@ function App({signOut, user}) {
     // on load, getPosts() runs. getPosts grabs all Posts from the cloud (models) and sets it to 'posts'
     // on load, getComments() runs. getComments grabs all Comments from the cloud (models) and sets it to 'comments'
   }, [])
+
+  const invoke = () => {
+    axios.post(api, data)
+    .then(response => {
+      console.log(response);
+    })
+    .catch((e) => {
+      console.log(e);
+    })
+  }
 
   const createPost = async () => {
     // a new object 'post' is created with title and content keys, which match the schema. 
@@ -104,8 +117,11 @@ function App({signOut, user}) {
   // in this return, posts is mapped through and displays each post
   return (
     <div className="App">
+      <h1 id='appHeader'>Amplify Blog</h1>
+      <button onClick={invoke}>Invoke lambda</button>
+      <hr></hr>
       <>
-      <h1>Hello {user.username}</h1>
+      <h2>Hello {user.username}</h2>
       <button onClick={signOut}>Sign out</button>
     </>
       <button onClick={createPost}>Create post</button>

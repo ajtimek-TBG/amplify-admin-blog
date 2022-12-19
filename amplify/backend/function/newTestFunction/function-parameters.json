@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "api": {
+      "amplifyadminblog": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
