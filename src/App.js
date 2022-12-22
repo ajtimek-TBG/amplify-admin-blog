@@ -14,7 +14,8 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";
 import { Button } from 'primereact/button'
-import { Card } from 'primereact/card';
+import { InputText } from 'primereact/inputtext';
+
 
 
 import awsExports from './aws-exports';
@@ -26,6 +27,7 @@ function App({ signOut, user }) {
 
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
+  const [showInputFields, setShowInputFields] = useState(false)
   const apiItems = 'https://ta328ylnla.execute-api.us-west-1.amazonaws.com/staging/items/1'
   const apiBooks = 'https://ta328ylnla.execute-api.us-west-1.amazonaws.com/staging/books/1'
 
@@ -38,8 +40,6 @@ function App({ signOut, user }) {
 
   useEffect(() => {
     console.log(user.username);
-
-
     const getComments = async () => {
       const models = await DataStore.query(Comment);
       setComments(models);
@@ -50,6 +50,11 @@ function App({ signOut, user }) {
     // on load, getPosts() runs. getPosts grabs all Posts from the cloud (models) and sets it to 'posts'
     // on load, getComments() runs. getComments grabs all Comments from the cloud (models) and sets it to 'comments'
   }, [])
+
+  const renderInputFields = () => {
+    setShowInputFields(true)
+    console.log(showInputFields);
+  }
 
   const invokeItems = () => {
     axios.post(apiItems)
@@ -152,8 +157,19 @@ function App({ signOut, user }) {
         <div className='buttonWrapper'>
           <Button onClick={signOut}>Sign out</Button>
 
-          <Button onClick={createPost}>Create post</Button>
+          {/* <Button onClick={createPost}>Create post</Button> */}
+          <Button onClick={renderInputFields}>Create post</Button>
         </div>
+        {showInputFields === true ? (
+          <>
+            <InputText />
+            <InputText />
+            <Button>Submit</Button>
+            <Button onClick={() => setShowInputFields(false)}>Cancel</Button>
+          </>
+        ) : (
+          <></>
+        )}
         <div className='blogWrapper'>
           {posts.map(post =>
             <div className='blogBox' key={post.id} >
@@ -171,10 +187,10 @@ function App({ signOut, user }) {
               })}
               {user.username === post.username ? (
                 <>
-                <div className='buttonWrapper'>
-                  <Button type='button' onClick={() => createComment(post.id)}>Add comment</Button>
-                  <Button onClick={() => deletePost(post.id)}>Delete post</Button>
-                  <Button onClick={() => updateTitle(post.id)}>Update title</Button>
+                  <div className='buttonWrapper'>
+                    <Button type='button' onClick={() => createComment(post.id)}>Add comment</Button>
+                    <Button onClick={() => deletePost(post.id)}>Delete post</Button>
+                    <Button onClick={() => updateTitle(post.id)}>Update title</Button>
                   </div>
                 </>
               ) : (

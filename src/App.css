@@ -10,7 +10,7 @@ body {
 
   width: 300px;
   border-radius: 5px;
-  border: solid black 2px;
+  border: solid lightgrey 2px;
   box-shadow: 5px 5px gray;
   margin: 20px;
   background-color: rgba(245, 245, 245, 0.54);
