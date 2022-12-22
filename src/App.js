@@ -16,6 +16,9 @@ import "primeicons/primeicons.css";
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {storeInstance} from './index'
+
 
 
 import awsExports from './aws-exports';
@@ -24,6 +27,9 @@ Amplify.configure(awsExports);
 
 
 function App({ signOut, user }) {
+
+  const dispatch = useDispatch()
+  const subscriberCount = useSelector((store) => store.subscriberCount)
 
   const [count, setCount] = useState(0)
   const [posts, setPosts] = useState([])
@@ -83,10 +89,21 @@ function App({ signOut, user }) {
     for (let post of posts) {
       if (post.id === postID) {
         // setCount(count + 1)
-        post.likes++
       }
     }
 
+  }
+
+  const increaseSubs = () => {
+    dispatch({
+      type: 'ADD_SUBSCRIBER'
+    })
+  }
+
+  const decreaseSubs = () => {
+    dispatch({
+      type: 'REMOVE_SUBSCRIBER'
+    })
   }
 
   const createPost = async () => {
@@ -217,6 +234,10 @@ function App({ signOut, user }) {
             </div>
           )}
         </div>
+        <h5>Subscribe to our blog!</h5>
+        <button onClick={increaseSubs}>Subscribe!</button>
+        <button onClick={decreaseSubs}>Unsubscribe!</button>
+        <h4>Subscribers: {subscriberCount}</h4>
       </>
     </div>
   );
