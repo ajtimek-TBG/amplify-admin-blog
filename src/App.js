@@ -25,6 +25,7 @@ Amplify.configure(awsExports);
 
 function App({ signOut, user }) {
 
+  const [count, setCount] = useState(0)
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
   const [showInputFields, setShowInputFields] = useState(false)
@@ -74,6 +75,18 @@ function App({ signOut, user }) {
       .catch((e) => {
         console.log(e);
       })
+  }
+
+  const addLike = (postID) => {
+    console.log(postID);
+
+    for (let post of posts) {
+      if (post.id === postID) {
+        // setCount(count + 1)
+        post.likes++
+      }
+    }
+
   }
 
   const createPost = async () => {
@@ -159,6 +172,7 @@ function App({ signOut, user }) {
 
           {/* <Button onClick={createPost}>Create post</Button> */}
           <Button onClick={renderInputFields}>Create post</Button>
+          <Button onClick={createPost}>Create post</Button>
         </div>
         {showInputFields === true ? (
           <>
@@ -194,9 +208,12 @@ function App({ signOut, user }) {
                   </div>
                 </>
               ) : (
+                <>
                 <Button id='addComment' onClick={() => createComment(post.id)}>Add comment</Button>
+                <Button label='Like' icon='pi pi-heart' onClick={() => addLike(post.id)}></Button>
+                </>
               )}
-
+              <p>Likes: {post.likes}</p>
             </div>
           )}
         </div>

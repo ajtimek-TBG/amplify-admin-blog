@@ -27,21 +27,25 @@ export default function PostCreateForm(props) {
     title: undefined,
     content: undefined,
     username: undefined,
+    likes: undefined,
   };
   const [title, setTitle] = React.useState(initialValues.title);
   const [content, setContent] = React.useState(initialValues.content);
   const [username, setUsername] = React.useState(initialValues.username);
+  const [likes, setLikes] = React.useState(initialValues.likes);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setTitle(initialValues.title);
     setContent(initialValues.content);
     setUsername(initialValues.username);
+    setLikes(initialValues.likes);
     setErrors({});
   };
   const validations = {
     title: [{ type: "Required" }],
     content: [{ type: "Required" }],
     username: [],
+    likes: [],
   };
   const runValidationTasks = async (fieldName, value) => {
     let validationResponse = validateField(value, validations[fieldName]);
@@ -64,6 +68,7 @@ export default function PostCreateForm(props) {
           title,
           content,
           username,
+          likes,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -115,6 +120,7 @@ export default function PostCreateForm(props) {
               title: value,
               content,
               username,
+              likes,
             };
             const result = onChange(modelFields);
             value = result?.title ?? value;
@@ -140,6 +146,7 @@ export default function PostCreateForm(props) {
               title,
               content: value,
               username,
+              likes,
             };
             const result = onChange(modelFields);
             value = result?.content ?? value;
@@ -165,6 +172,7 @@ export default function PostCreateForm(props) {
               title,
               content,
               username: value,
+              likes,
             };
             const result = onChange(modelFields);
             value = result?.username ?? value;
@@ -178,6 +186,41 @@ export default function PostCreateForm(props) {
         errorMessage={errors.username?.errorMessage}
         hasError={errors.username?.hasError}
         {...getOverrideProps(overrides, "username")}
+      ></TextField>
+      <TextField
+        label="Likes"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        onChange={(e) => {
+          let value = parseInt(e.target.value);
+          if (isNaN(value)) {
+            setErrors((errors) => ({
+              ...errors,
+              likes: "Value must be a valid number",
+            }));
+            return;
+          }
+          if (onChange) {
+            const modelFields = {
+              title,
+              content,
+              username,
+              likes: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.likes ?? value;
+          }
+          if (errors.likes?.hasError) {
+            runValidationTasks("likes", value);
+          }
+          setLikes(value);
+        }}
+        onBlur={() => runValidationTasks("likes", likes)}
+        errorMessage={errors.likes?.errorMessage}
+        hasError={errors.likes?.hasError}
+        {...getOverrideProps(overrides, "likes")}
       ></TextField>
       <Flex
         justifyContent="space-between"

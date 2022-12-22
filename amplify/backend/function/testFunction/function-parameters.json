@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "api": {
+      "api3feb80a3": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

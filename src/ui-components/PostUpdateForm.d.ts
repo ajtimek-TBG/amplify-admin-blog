@@ -17,11 +17,13 @@ export declare type PostUpdateFormInputValues = {
     title?: string;
     content?: string;
     username?: string;
+    likes?: number;
 };
 export declare type PostUpdateFormValidationValues = {
     title?: ValidationFunction<string>;
     content?: ValidationFunction<string>;
     username?: ValidationFunction<string>;
+    likes?: ValidationFunction<number>;
 };
 export declare type FormProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type PostUpdateFormOverridesProps = {
@@ -29,6 +31,7 @@ export declare type PostUpdateFormOverridesProps = {
     title?: FormProps<TextFieldProps>;
     content?: FormProps<TextFieldProps>;
     username?: FormProps<TextFieldProps>;
+    likes?: FormProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type PostUpdateFormProps = React.PropsWithChildren<{
     overrides?: PostUpdateFormOverridesProps | undefined | null;
