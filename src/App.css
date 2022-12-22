@@ -3,7 +3,7 @@
 }
 
 body {
-  background-color: rgb(212, 248, 248);
+  /* background-color: rgb(212, 248, 248); */
 }
 
 .blogBox {
@@ -22,11 +22,21 @@ body {
   flex-wrap: wrap;
 }
 
-#appHeader {
+.buttonWrapper {
+  display: flex;
+justify-content: space-around;
+  flex-wrap: wrap;
+}
 
+.invokes {
+  margin: 15px;
 }
 
 hr {
   width: 800px;
+}
+
+#addComment {
+  margin-bottom: 10px;
 }
 

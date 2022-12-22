@@ -27,7 +27,7 @@
         },
         "newTestFunction": {
           "deploymentBucketName": "amplify-amplifyadminblog-staging-184620-deployment",
-          "s3Key": "amplify-builds/newTestFunction-623854412f5159725044-build.zip"
+          "s3Key": "amplify-builds/newTestFunction-6339535331436f377764-build.zip"
         }
       },
       "api": {

@@ -10,15 +10,24 @@ import axios from 'axios';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
+import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";
+import { Button } from 'primereact/button'
+import { Card } from 'primereact/card';
+
+
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
 
-function App({signOut, user}) {
+
+
+function App({ signOut, user }) {
 
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
-  // const api = 'https://p5268ukeqb.execute-api.us-west-1.amazonaws.com/default/amplifyadminblog349a2f6d-staging'
-  // const data = {"name": "AJ"}
+  const apiItems = 'https://ta328ylnla.execute-api.us-west-1.amazonaws.com/staging/items/1'
+  const apiBooks = 'https://ta328ylnla.execute-api.us-west-1.amazonaws.com/staging/books/1'
 
   const getPosts = async () => {
     // const models = await DataStore.query(Post, c => c.username.contains(user.username));
@@ -29,7 +38,7 @@ function App({signOut, user}) {
 
   useEffect(() => {
     console.log(user.username);
-    
+
 
     const getComments = async () => {
       const models = await DataStore.query(Comment);
@@ -42,14 +51,24 @@ function App({signOut, user}) {
     // on load, getComments() runs. getComments grabs all Comments from the cloud (models) and sets it to 'comments'
   }, [])
 
-  const invoke = () => {
-    axios.post(api, data)
-    .then(response => {
-      console.log(response);
-    })
-    .catch((e) => {
-      console.log(e);
-    })
+  const invokeItems = () => {
+    axios.post(apiItems)
+      .then(response => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+  }
+
+  const invokeBooks = () => {
+    axios.get(apiBooks)
+      .then(response => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      })
   }
 
   const createPost = async () => {
@@ -117,42 +136,55 @@ function App({signOut, user}) {
   // in this return, posts is mapped through and displays each post
   return (
     <div className="App">
-      <h1 id='appHeader'>Amplify Blog</h1>
-      <button onClick={invoke}>Invoke lambda</button>
-      <hr></hr>
       <>
-      <h2>Hello {user.username}</h2>
-      <button onClick={signOut}>Sign out</button>
-    </>
-      <button onClick={createPost}>Create post</button>
-      <div className='blogWrapper'>
-        {posts.map(post =>
-          <div className='blogBox' key={post.id} >
-            <h6>Author: {post.username}</h6>
-            <h1>{post.title}</h1>
-            <h5>{post.content}</h5>
-            {comments.map(comment => {
-              if (comment.postID === post.id) {
-                return (
-                  <div key={comment.id}>
-                    <p>{comment.author} says: {comment.text}</p>
-                  </div>
-                )
-              }
-            })}
-            {user.username === post.username ? (
-              <>
-                <button onClick={() => createComment(post.id)}>Add comment</button>
-              <button onClick={() => deletePost(post.id)}>Delete post</button>
-              <button onClick={() => updateTitle(post.id)}>Update title</button>
-              </>
-            ) : (
-              <button onClick={() => createComment(post.id)}>Add comment</button>
-            )}
-            
+        <h1 id='appHeader'>Amplify Blog</h1>
+        <div className='blogWrapper'>
+          <div className='invokes'>
+            <Button onClick={invokeItems}>Invoke lambda(items)</Button>
           </div>
-        )}
-      </div>
+          <div className='invokes'>
+            <Button onClick={invokeBooks}>Invoke lambda(books)</Button>
+          </div>
+        </div>
+        <hr></hr>
+
+        <h2>Hello {user.username}</h2>
+        <div className='buttonWrapper'>
+          <Button onClick={signOut}>Sign out</Button>
+
+          <Button onClick={createPost}>Create post</Button>
+        </div>
+        <div className='blogWrapper'>
+          {posts.map(post =>
+            <div className='blogBox' key={post.id} >
+              <h6>Author: {post.username}</h6>
+              <h1>{post.title}</h1>
+              <h5>{post.content}</h5>
+              {comments.map(comment => {
+                if (comment.postID === post.id) {
+                  return (
+                    <div key={comment.id}>
+                      <p>{comment.author} says: {comment.text}</p>
+                    </div>
+                  )
+                }
+              })}
+              {user.username === post.username ? (
+                <>
+                <div className='buttonWrapper'>
+                  <Button type='button' onClick={() => createComment(post.id)}>Add comment</Button>
+                  <Button onClick={() => deletePost(post.id)}>Delete post</Button>
+                  <Button onClick={() => updateTitle(post.id)}>Update title</Button>
+                  </div>
+                </>
+              ) : (
+                <Button id='addComment' onClick={() => createComment(post.id)}>Add comment</Button>
+              )}
+
+            </div>
+          )}
+        </div>
+      </>
     </div>
   );
 }
